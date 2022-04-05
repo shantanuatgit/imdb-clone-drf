@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from watchlist_app.api import views
 urlpatterns = [
-    path('list/', views.watch_list, name='list'),
-    path('list/<int:pk>', views.watchlist_detail, name='singlelist'),
-    path('stream/', views.StreamPlatformAPIView.as_view(), name='stream'),
+    path('list/', views.watch_list, name='movie-list'),
+    path('list/<int:pk>', views.watchlist_detail, name='movie-detail'),
+    path('stream/', views.StreamPlatformList.as_view(), name='stream-list'),
+    path('stream/<int:pk>', views.StreamPlatformDetail.as_view(), name='stream-detail'),
 ]

@@ -5,7 +5,7 @@ from watchlist_app.models import *
 from watchlist_app.api.serializers import *
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
-
+from rest_framework import generics, mixins
 
 # class MovieListAPIView(APIView):
 #     def get(self, request):
@@ -65,15 +65,24 @@ def watchlist_detail(request, pk):
         movie.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class StreamPlatformAPIView(APIView):
+class StreamPlatformList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+    queryset = StreamPlatform.objects.all()
+    serializer_class = StreamPlatformSerializer
     def get(self, request):
-        platform = StreamPlatform.objects.all()
-        serializer = StreamPlatformSerializer(platform, many=True)
-        return Response(serializer.data)
+        return self.list(request)
+
     def post(self, request):
-        serializer = StreamPlatformSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+        return self.create(request)
+
+
+class StreamPlatformDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+    queryset = StreamPlatform.objects.all()
+    serializer_class = StreamPlatformSerializer
+    def get(self, request, pk):
+        return self.retrieve(request,pk)
+
+    def put(self, request, pk):
+        return self.update(request, pk)
+
+    def delete(self, request, pk):
+        return self.destroy(request)
