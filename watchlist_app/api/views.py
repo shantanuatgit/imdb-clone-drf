@@ -53,6 +53,16 @@ class StreamPlatformDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = StreamPlatform.objects.all()
     serializer_class = StreamPlatformSerializer
 
+
+class ReviewCreate(generics.CreateAPIView):
+    serializer_class = ReviewSerializer
+
+    def perform_create(self, serializer):
+        pk = self.kwargs.get('pk')
+        movie = WatchList.objects.get(pk=pk)
+        serializer.save(watchlist=movie)
+
+
 class ReviewList(mixins.ListModelMixin, generics.GenericAPIView):
     def get_queryset(self):
         pk = self.kwargs['pk']

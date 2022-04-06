@@ -17,10 +17,13 @@ from django.contrib import admin
 from django.urls import path
 from watchlist_app.api import views
 urlpatterns = [
+    # watchlist
     path('list/', views.watch_list, name='movie-list'),
     path('list/<int:pk>', views.watchlist_detail, name='movie-detail'),
     path('stream/', views.StreamPlatformList.as_view(), name='stream-list'),
     path('stream/<int:pk>', views.StreamPlatformDetail.as_view(), name='stream-detail'),
+    # Reviews
+    path('stream/<int:pk>/review-create/', views.ReviewCreate.as_view(), name='review-create'),
     path('stream/<int:pk>/review/', views.ReviewList.as_view(), name='review-list'),
     path('stream/review/<int:pk>', views.ReviewDetail.as_view(), name='review-detail')
 ]
