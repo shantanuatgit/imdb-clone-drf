@@ -13,13 +13,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from watchlist_app.api import views
+from rest_framework.routers  import DefaultRouter
+
+router = DefaultRouter()
+router.register('movies', views.WatchListViewSet, basename='movie-list')
 urlpatterns = [
     # watchlist
-    path('list/', views.watch_list, name='movie-list'),
-    path('list/<int:pk>', views.watchlist_detail, name='movie-detail'),
+    path('list/', include(router.urls)),
+    # Stream Platform
     path('stream/', views.StreamPlatformList.as_view(), name='stream-list'),
     path('stream/<int:pk>', views.StreamPlatformDetail.as_view(), name='stream-detail'),
     # Reviews
