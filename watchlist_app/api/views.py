@@ -1,14 +1,14 @@
 from django.shortcuts import render
+from watchlist_app.models import *
+from watchlist_app.api.serializers import *
+from .permissions import *
 from rest_framework.response import Response
 from rest_framework.validators import ValidationError
 from rest_framework import status
-from watchlist_app.models import *
-from watchlist_app.api.serializers import *
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework import generics, mixins
 from rest_framework import viewsets
-
 
 
 class WatchListViewSet(viewsets.ModelViewSet):
@@ -93,6 +93,8 @@ class ReviewDetail(mixins.RetrieveModelMixin,
                 generics.GenericAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    permission_classes = [IsOwnerOrReadOnly]
+
     def get(self, request, pk):
         return self.retrieve(request,pk)
 
