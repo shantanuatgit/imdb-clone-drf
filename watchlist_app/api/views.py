@@ -9,7 +9,7 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework import generics, mixins
 from rest_framework import viewsets
-
+from rest_framework.permissions import IsAuthenticated
 
 class WatchListViewSet(viewsets.ModelViewSet):
     queryset = WatchList.objects.all()
@@ -87,7 +87,9 @@ class ReviewList(mixins.ListModelMixin, generics.GenericAPIView):
     def get_queryset(self):
         pk = self.kwargs['pk']
         return Review.objects.filter(watchlist=pk)
+
     serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
     def get(self, request, *args, **kwargs):
         return self.list(request)
 
