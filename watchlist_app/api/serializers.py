@@ -8,14 +8,21 @@ class ReviewSerializer(serializers.ModelSerializer):
         exclude = ('watchlist',)
 
 class WatchListSerializer(serializers.ModelSerializer):
-    reviews = ReviewSerializer(many=True, read_only=True)
+    # reviews = ReviewSerializer(many=True, read_only=True)
+    platform = serializers.CharField(source='platform.platform')
     class Meta:
         model = WatchList
         fields = '__all__'
 
 
+class WatchListForStreamPlatformSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WatchList
+        fields = ['title']
+
+
 class StreamPlatformSerializer(serializers.ModelSerializer):
-    watchlist = WatchListSerializer(many=True, read_only=True)
+    watchlist = WatchListForStreamPlatformSerializer(many=True, read_only=True)
     class Meta:
         model = StreamPlatform
         fields = '__all__'
