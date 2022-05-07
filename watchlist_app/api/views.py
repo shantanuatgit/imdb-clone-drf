@@ -2,6 +2,7 @@ from django.shortcuts import render
 from watchlist_app.models import *
 from watchlist_app.api.serializers import *
 from .permissions import *
+from watchlist_app.api.throttling import *
 from rest_framework.response import Response
 from rest_framework.validators import ValidationError
 from rest_framework import status
@@ -11,12 +12,18 @@ from rest_framework import generics, mixins
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle, ScopedRateThrottle
-from watchlist_app.api.throttling import *
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+
 
 class WatchListViewSet(viewsets.ModelViewSet):
     queryset = WatchList.objects.all()
     serializer_class = WatchListSerializer
-
+class ReviewUser(generics.ListAPIView):
+    serializer_class = ReviewSerializer
+    def get_queryset(self):
+        username = self.kwargs['username']
+        return Review.objects.filter(review_user__username=username)
 # @api_view(['GET', 'POST'])
 # def watch_list(request):
 #     if request.method == 'GET':
@@ -92,8 +99,12 @@ class ReviewList(mixins.ListModelMixin, generics.GenericAPIView):
         return Review.objects.filter(watchlist=pk)
 
     serializer_class = ReviewSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     throttle_classes = [ReviewListThrottle, AnonRateThrottle]
+    filter_backends = [filters.OrderingFilter]
+    # filterset_fields = ['review_user__username', 'active']
+    ordering_filter = ['rating']
+
     def get(self, request, *args, **kwargs):
         return self.list(request)
 
