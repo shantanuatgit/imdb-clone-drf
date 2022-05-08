@@ -55,7 +55,7 @@ REST_FRAMEWORK = {
     # Throttling
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle'
+        'rest_framework.throttling.UserRateThrottle',
     ],
 
     'DEFAULT_THROTTLE_RATES': {
@@ -64,7 +64,11 @@ REST_FRAMEWORK = {
         'review-create': '5/day',
         'review-list': '10/day',
         'review-detail': '2/day',
-    }
+    },
+
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
 }
 
 SIMPLE_JWT = {

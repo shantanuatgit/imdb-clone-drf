@@ -105,7 +105,7 @@ class ReviewList(mixins.ListModelMixin, generics.GenericAPIView):
 
     serializer_class = ReviewSerializer
     # permission_classes = [IsAuthenticated]
-    throttle_classes = [ReviewListThrottle, AnonRateThrottle]
+    # throttle_classes = [ReviewListThrottle, AnonRateThrottle]
     filter_backends = [filters.OrderingFilter]
     # filterset_fields = ['review_user__username', 'active']
     ordering_filter = ['rating']
