@@ -2,6 +2,7 @@ from django.shortcuts import render
 from watchlist_app.models import *
 from watchlist_app.api.serializers import *
 from .permissions import *
+from watchlist_app.api.pagination import *
 from watchlist_app.api.throttling import *
 from rest_framework.response import Response
 from rest_framework.validators import ValidationError
@@ -19,6 +20,9 @@ from rest_framework import filters
 class WatchListViewSet(viewsets.ModelViewSet):
     queryset = WatchList.objects.all()
     serializer_class = WatchListSerializer
+    pagination_class = WatchListPagination
+
+
 class ReviewUser(generics.ListAPIView):
     serializer_class = ReviewSerializer
     def get_queryset(self):
@@ -94,6 +98,7 @@ class ReviewCreate(generics.CreateAPIView):
 
 
 class ReviewList(mixins.ListModelMixin, generics.GenericAPIView):
+    pagination_class = WatchListPagination
     def get_queryset(self):
         pk = self.kwargs['pk']
         return Review.objects.filter(watchlist=pk)
