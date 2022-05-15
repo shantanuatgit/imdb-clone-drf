@@ -17,11 +17,12 @@ from django.urls import path, include
 from watchlist_app.api import views
 from rest_framework.routers  import DefaultRouter
 
+
 router = DefaultRouter()
-router.register('movies', views.WatchListViewSet, basename='movie-list')
+router.register('movies/', views.WatchListViewSet, basename="watchlist")
 urlpatterns = [
     # watchlist
-    path('list/', include(router.urls)),
+    path('', include(router.urls)),
     # Stream Platform
     path('stream/', views.StreamPlatformList.as_view(), name='stream-list'),
     path('stream/<int:pk>/', views.StreamPlatformDetail.as_view(), name='stream-detail'),

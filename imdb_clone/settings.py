@@ -66,9 +66,9 @@ REST_FRAMEWORK = {
         'review-detail': '2/day',
     },
 
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    ),
+    # 'DEFAULT_RENDERER_CLASSES': (
+    #     'rest_framework.renderers.JSONRenderer',
+    # ),
 }
 
 SIMPLE_JWT = {

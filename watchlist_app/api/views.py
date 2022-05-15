@@ -21,7 +21,7 @@ class WatchListViewSet(viewsets.ModelViewSet):
     queryset = WatchList.objects.all()
     serializer_class = WatchListSerializer
     pagination_class = WatchListPagination
-
+    permission_classes = [IsAdminOrReadOnly]
 
 class ReviewUser(generics.ListAPIView):
     serializer_class = ReviewSerializer
@@ -66,6 +66,7 @@ class ReviewUser(generics.ListAPIView):
 class StreamPlatformList(generics.ListCreateAPIView):
     queryset = StreamPlatform.objects.all()
     serializer_class = StreamPlatformSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class StreamPlatformDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -84,6 +85,7 @@ class ReviewCreate(generics.CreateAPIView):
         pk = self.kwargs.get('pk')
         movie = WatchList.objects.get(pk=pk)
         review_user = self.request.user
+        print(review_user)
         review_queryset = Review.objects.filter(watchlist=movie, review_user=review_user)
         if review_queryset.exists():
             raise ValidationError("You have already reviewed this movie")
